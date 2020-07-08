@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Digit Recogniser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <style type="text/css">
+      .navbar {
+        text-align: left;
+        padding: 2vh 5vw 3vh 5vw;
+        background-color: #1f1c28;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        font-family: verdana;
+      }
+      .item {
+        display: block;
+        color: white;
+      }
+      .item:first-child {
+        font-size: 2.5em !important;
+        flex-grow: 3;
+        text-align: left;
+      }
+      .item:not(first-child) {
+        justify-content: flex-end;
+        font-size: 1.5em;
+        flex-grow: 1;
+        margin: auto;
+        margin-bottom: -10px;
+        text-align: right;
+      }
+      body {
+        background: lightgray;
+        margin-top: 0px;
+        margin-right: 0px;
+        padding: 0px;
+      }
+      .footer {
+        color: white;
+        background: #1f1c28;
+        text-align: center;
+        padding-top: 5px;
+        padding-bottom: 10px;
+      }
+      .canvas-container {
+        padding-top: 10vh;
+        padding-bottom: 5vh;
+      }
+      #gameCanvas {
+        cursor: pointer;
+        border: solid grey 1px;
+        margin-bottom: 5vh;
+        width: 280px;
+        height: 280px;
+      }
+      hr {
+        border: 0;
+        clear: both;
+        display: block;
+        width: 46%;
+        background-color: lightgray;
+        height: 1px;
+      }
+      #display-digit {
+        color: #1f1c28;
+        font-size: xx-large;
+        margin-bottom: 6.5vh;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="item">
+        Digits Recogniser
+      </div>
+      <div class="item">Identify Digits from <b>YOUR</b> drawing.</div>
+      <hr color="white" align="left" />
+    </nav>
+    <div align="center" class="canvas-container">
+      <canvas id="gameCanvas"></canvas>
+      <br />
+      <button class="btn btn-danger" onclick="clearCanvas()">Clear</button>
+      <button id="submit" class="btn btn-success">
+        Submit
+      </button>
+    </div>
+    <div class="container" id="display-digit">
+      The digit drawn above is :
+    </div>
+    <footer class="footer">
+      Made By Tejas Ghone, Vatsal Soni, Yashodhan Joshi, Yatharth Vyas
+    </footer>
+    <script src="./bootstrap.js"></script>
+    <script type="text/javascript">
+      var canvas;
+      var canvasContext;
+      var xPos;
+      var yPos;
+      var mouse_pressed = false;
+      var digit = Array(28)
+        .fill()
+        .map(() => Array(28).fill(0));
+      window.onload = function () {
+        canvas = document.getElementById('gameCanvas');
+        canvasContext = canvas.getContext('2d');
+        canvas.width = 280;
+        canvas.height = 280;
+        canvas.addEventListener('mousemove', function (evt) {
+          if (evt.buttons !== 1) {
+            return;
+          }
+          if (mouse_pressed) {
+            var mousePos = findMousePos(evt);
+            fillCustomBlock(
+              Math.floor(mousePos.x / 10),
+              Math.floor(mousePos.y / 10)
+            );
+          }
+        });
+
+        canvas.addEventListener('click', function (evt) {
+          var mousePos = findMousePos(evt);
+          fillCustomBlock(
+            Math.floor(mousePos.x / 10),
+            Math.floor(mousePos.y / 10)
+          );
+        });
+
+        canvas.addEventListener('mousedown', function (evt) {
+          mouse_pressed = true;
+        });
+
+        canvas.addEventListener('mouseup', function (evt) {
+          mouse_pressed = false;
+        });
+      };
+
+      function fillCustomBlock(x, y) {
+        if (x < 0)
+          //Sometimes if mouse is ta the top corner, Math.floor() yeilds a negative number
+          x = 0;
+        if (y < 0) y = 0;
+        digit[y][x] = 1; // Note: here it is important to keep y and x in this order only!
+        canvasContext.fillRect(10 * x, 10 * y, 10, 10);
+      }
+
+      function findMousePos(evt) {
+        var rectBorder = canvas.getBoundingClientRect(); //Accounts for scroll distance and margin outside canvas
+        var mouseX = evt.clientX - rectBorder.left;
+        var mouseY = evt.clientY - rectBorder.top;
+        return {
+          x: mouseX,
+          y: mouseY,
+        };
+      }
+
+      function clearCanvas(evt) {
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        digit = Array(28)
+          .fill()
+          .map(() => Array(28).fill(0));
+      }
+    </script>
+  </body>
+</html>
