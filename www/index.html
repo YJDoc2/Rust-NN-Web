@@ -109,7 +109,11 @@
     	Use your mouse to draw any digit in the box provided above, we will use our trained Neural Network model to predict the number drawn by you ! For best results, make sure your drawing is centralized and isnt too small or too large. You can also help us improve by giving us your feedback whether our prediction was accurate or not. To know more, visit our <a href="https://github.com/YJDoc2/Rust-NN-Web"> Github Repository.</a>
     </div>
     <div class="container" id="display-digit">
-      The digit drawn above is : <b id="ans"> </b><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal" id="Feedback">Feedback</button>
+      Most confident answer : <b id="mc-ans"> </b>
+      Predicted with confidence : <b id="mc-conf"> </b>
+      Most predicted answer : <b id="mp-ans"> </b>
+      Predicted with confidence : <b id="mp-conf"> </b>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal" id="Feedback">Feedback</button>
     </div>
 
 <!-- Modal -->
