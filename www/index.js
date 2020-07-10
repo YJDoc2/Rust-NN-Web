@@ -9,7 +9,12 @@ document.getElementById('submit').addEventListener('click', () => {
   for (var i = 0; i < 28; i++) {
     newArr = newArr.concat(digit[i]);
   }
-  console.log(wasm.guess(newArr));
+  var result = wasm.guess(newArr);
+  console.log(result);
+  document.getElementById('ans').innerHTML=result;
+  document.getElementById('modal-ans').innerHTML=result;
+  document.getElementById('display-digit').style.display = "block";
+  document.getElementById('description').style.display = "none";
 });
 
 function guess(arr) {
