@@ -1,5 +1,6 @@
+mod manipulation;
 mod utils;
-
+use manipulation::Direction;
 use utils::set_panic_hook;
 
 use ndarray::{Array1, Array2};
@@ -16,6 +17,14 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
 extern "C" {
     fn alert(s: &str);
+}
+
+#[wasm_bindgen]
+pub struct Output {
+    pub max_conf: f32,
+    pub max_conf_predict: u8,
+    pub most_occ: u8,
+    pub most_occ_conf: f32,
 }
 
 struct Network {
@@ -46,6 +55,7 @@ static mut net: Network = Network {
 
 #[derive(Serialize, Deserialize)]
 pub struct WB {
+    acc: f32,
     weights: Vec<Vec<Vec<f32>>>,
     biases: Vec<Vec<f32>>,
 }
@@ -80,16 +90,72 @@ pub fn load_from_string(sizes: Vec<i32>, s: String) {
 }
 
 #[wasm_bindgen]
-pub fn guess(input: Vec<i32>) -> usize {
+pub fn guess(input: Vec<i32>) -> Output {
     let mut a = Array1::zeros(input.len());
     for i in 0..input.len() {
         a[i] = input[i] as f32;
     }
-    let mut out = 0;
+    let mut activation = Vec::new();
     unsafe {
-        out = max(&net.feedforward(&a));
+        activation.push(net.feedforward(&a));
+        activation.push(net.feedforward(&manipulation::shift(&a, Direction::Left, 2)));
+        activation.push(net.feedforward(&manipulation::shift(&a, Direction::Down, 2)));
+        activation.push(net.feedforward(&manipulation::shift(&a, Direction::Right, 2)));
+        activation.push(net.feedforward(&manipulation::shift(&a, Direction::Up, 2)));
     }
+
+    let mut output = Vec::new();
+    let mut conf = Vec::new();
+
+    for a in activation.iter() {
+        output.push(max(&a));
+        conf.push(confidence(&a));
+    }
+
+    let mut out = Output {
+        max_conf: 0.0,
+        max_conf_predict: 0,
+        most_occ: 0,
+        most_occ_conf: 0.0,
+    };
+
+    for i in 0..5 {
+        if conf[i] > out.max_conf {
+            out.max_conf = conf[i];
+            out.max_conf_predict = output[i] as u8;
+        }
+    }
+
+    let mut counts = std::collections::BTreeMap::new();
+    for a in output.iter() {
+        *counts.entry(a).or_insert(0) += 1;
+    }
+
+    let max = counts
+        .into_iter()
+        .max_by_key(|&(val, count)| (*val, count))
+        .unwrap_or((&0, 0));
+
+    out.most_occ = *(max.0) as u8;
+    out.most_occ_conf = conf[output
+        .iter()
+        .position(|&a| a == out.most_occ as usize)
+        .unwrap()];
+
     out
+}
+
+fn confidence(out: &Array1<f32>) -> f32 {
+    let max = max(out);
+    let mut sum = 0.0;
+    for i in 0..10 {
+        if i != max as usize {
+            sum += out[i];
+        }
+    }
+    let avg = sum / 9.0;
+
+    (out[max as usize] - avg) * 100.0
 }
 
 fn max(input: &Array1<f32>) -> usize {
