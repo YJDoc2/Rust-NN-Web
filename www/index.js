@@ -11,6 +11,7 @@ document.getElementById("submit").addEventListener("click", () => {
   }
   var result = wasm.guess(newArr);
   console.log(result);
+
   document.getElementById("mc-conf").innerHTML = result.max_conf;
   document.getElementById("mc-ans").innerHTML = result.max_conf_predict;
   document.getElementById("mp-conf").innerHTML = result.most_occ_conf;
@@ -39,6 +40,7 @@ document.getElementById("storeAns").addEventListener("click", async () => {
   } catch (e) {
     console.log(e);
   }
+
 });
 
 function guess(arr) {

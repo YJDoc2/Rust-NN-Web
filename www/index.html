@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 
+
 <head>
   <title>Digit Recogniser</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -193,6 +194,7 @@
           return;
         }
         if (mouse_pressed) {
+
           var mousePos = findMousePos(evt);
           fillCustomBlock(
             Math.floor(mousePos.x / 10),
@@ -217,6 +219,7 @@
         mouse_pressed = false;
       });
     };
+
 
     function fillCustomBlock(x, y) {
       if (x < 0)
@@ -244,9 +247,11 @@
               }
             }
         }
+
       }
 
     }
+
 
     function paintLightGrey(x, y) {
       canvasContext.fillStyle = 'darkgray ';
