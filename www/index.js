@@ -51,7 +51,7 @@ document.getElementById("submit").addEventListener("click", () => {
 		}
 	else
 		for (var q = left_start ; q <= right_end ; q++) {
-	  		digit[p][q+horizontal_shift]=digit[p][q];
+	  		digit[p][q + horizontal_shift]=digit[p][q];
 	  		digit[p][q]=0;	
 		}
   }
@@ -65,7 +65,8 @@ document.getElementById("submit").addEventListener("click", () => {
 		}
 	else
 		for (var q = top_start ; q <= bottom_end ; q++) {
-	  		digit[q - vertical_shift][p]=digit[q][p];
+			console.log(vertical_shift,horizontal_shift)
+	  		digit[q + vertical_shift][p]=digit[q][p];
 	  		digit[q][p]=0;	
 		}
  }
