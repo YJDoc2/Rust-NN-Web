@@ -65,7 +65,6 @@ document.getElementById("submit").addEventListener("click", () => {
 		}
 	else
 		for (var q = top_start ; q <= bottom_end ; q++) {
-			console.log(vertical_shift,horizontal_shift)
 	  		digit[q + vertical_shift][p]=digit[q][p];
 	  		digit[q][p]=0;	
 		}
