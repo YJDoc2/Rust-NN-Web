@@ -71,9 +71,6 @@ document.getElementById("submit").addEventListener("click", () => {
 		}
  }
 
-  console.log(digit[14][14])
-  console.log(digit)
-
   var newArr = [];
   for (var i = 0; i < 28; i++) {
     newArr = newArr.concat(digit[i]);
