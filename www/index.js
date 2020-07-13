@@ -41,8 +41,8 @@ document.getElementById("submit").addEventListener("click", () => {
   	if(flag1 && flag2)
   		break;
   }
-  var horizontal_shift = 14-((left_start+right_end)/2);
-  var vertical_shift = 14-((top_start+bottom_end)/2);
+  var horizontal_shift = Math.floor(14-((left_start+right_end)/2));
+  var vertical_shift = Math.floor(14-((top_start+bottom_end)/2));
   for (var p = top_start; p <= bottom_end; p++){
   	if((27-right_end)>left_start) // bigger gap on right side
 	  	for (var q = right_end ; q >= left_start ; q--) {
