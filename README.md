@@ -3,8 +3,16 @@
 ## About
 
 This project is contributed by : Yashodhan Joshi , Vatsal Soni, Yatharth Vyas & Tejas Ghone.
-Neural networks currently provide the best solutions to many problems in image recognition, speech recognition, and natural language processing etc. 
+Neural networks currently provide the best solutions to many problems in image recognition, speech recognition, and natural language processing etc.
 In this project we have incorporated our trained Neural Network for Recognizing handwritten digits which has been implemented in Rust in a basic node server which basically serves a view for taking handwritten digit input and predicting it as our output!
+
+## Building
+
+Install tools except cargo-generate as shown [here](https://rustwasm.github.io/docs/book/game-of-life/setup.html)
+<code>wasm-pack build </code> in main directory to compile the rust code to wasm, adn create pkg directory.
+<code>npm install && npm start</code> in www folder to install required npm module and start the server on localhost:8080.
+
+## About the network
 
 <h4>Neural Net for predicting handwritten digits</h4>
 You can take a look at our Neural Net for recognizing handwritten digits over [here](https://github.com/YJDoc2/Rust-NN)
@@ -16,8 +24,3 @@ U can view the functional code in the lib.rs file of the src folder and also the
 <h4>Using our Trained model to predict the input digit</h4>
 The input is taken from the user which is then passed to the guess function of our wasm package . The guess function then runs our Net on the input array . We have used the weights and biases of the trained network for predicting the input digit . U can find the weights and biases in the network.json file of www folder. The function then returns a value in range 0-9 which in turn is the predicted output
 For adding randomization we have trained the model on data having noise and shifts as well.The code can be viewed in lib.rs file of src folder
-
-
-
-
-
