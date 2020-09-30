@@ -24,3 +24,14 @@ U can view the functional code in the lib.rs file of the src folder and also the
 <h4>Using our Trained model to predict the input digit</h4>
 The input is taken from the user which is then passed to the guess function of our wasm package . The guess function then runs our Net on the input array . We have used the weights and biases of the trained network for predicting the input digit . U can find the weights and biases in the network.json file of www folder. The function then returns a value in range 0-9 which in turn is the predicted output
 For adding randomization we have trained the model on data having noise and shifts as well.The code can be viewed in lib.rs file of src folder
+
+## Usage
+
+Simply draw in the box provided and press the Predict button to know the result.
+
+![image](img/digit_demo.gif)
+
+
+You can also provide feedback if the model predicts your drawing incorrectly, as of now we haven't implemented anything to improve the model based on the feedback but that can be done in the future.
+
+![image](img/feedback.gif)
